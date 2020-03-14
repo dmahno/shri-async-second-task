@@ -6,7 +6,7 @@
 
 ### Вариант 4
 
-[html страница] (https://dmahno.github.io/shri-async-second-task/)
+[html страница](https://dmahno.github.io/shri-async-second-task/)
 
 Посчитать площадь треугольника.
 
