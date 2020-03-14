@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="" />
+    <style></style>
+  </head>
+
+  <body>
+    <script src="shri-async-hw.js"></script>
+    <script>
+      const {
+        AsyncArray,
+        add,
+        subtract,
+        multiply,
+        divide,
+        mod,
+        less,
+        equal,
+        lessOrEqual,
+        sqrt
+      } = Homework;
+
+      // Конвертируем в promise
+      const promisify = f => (...args) =>
+        new Promise(resolve => {
+          f.call(null, ...args, resolve);
+        });
+
+      async function calculateTriangleArea(x1, y1, x2, y2, x3, y3, cb) {
+        // Берем координаты точек
+        const yDiff1 = await promisify(subtract)(y2, y3);
+        const yDiff2 = await promisify(subtract)(y3, y1);
+        const yDiff3 = await promisify(subtract)(y1, y2);
+        // Перемножение сторон
+        const xMultiplier1 = await promisify(multiply)(x1, yDiff1);
+        const xMultiplier2 = await promisify(multiply)(x2, yDiff2);
+        const xMultiplier3 = await promisify(multiply)(x3, yDiff3);
+        // Расчет суммы всех перемноженных сторон
+        let sumOfXMultipliers = await promisify(add)(
+          xMultiplier1,
+          xMultiplier2
+        );
+        sumOfXMultipliers = await promisify(add)(
+          sumOfXMultipliers,
+          xMultiplier3
+        );
+        // Возвращаем значение площади
+        const area = await promisify(divide)(sumOfXMultipliers, 2);
+        cb(area);
+      }
+
+      // Выводим в консоль
+      console.log(
+        'Расчет площади треугольника (6 точек на плоскости) с координатами (2, 4), (3, -6), (7, 8)'
+      );
+      calculateTriangleArea(2, 4, 3, -6, 7, 8, result => {
+        console.log('Площадь треугольника:', result);
+
+        //отображаем на странице для удобства
+        let showTriangleSquare = document.createElement('div');
+        let comments = document.createElement('div');
+        showTriangleSquare.innerHTML = `Площадь треугольника: ${result}`;
+        comments.innerText = 'Расчет также указан в консоле';
+        document.body.appendChild(showTriangleSquare);
+        document.body.appendChild(comments);
+      });
+    </script>
+  </body>
+</html>
